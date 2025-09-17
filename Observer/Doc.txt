@@ -1,0 +1,39 @@
+O Observer é um padrão comportamental que permite que um objeto (Subject) 
+notifique outros objetos (Observers) sobre mudanças em seu estado.
+É útil quando você deseja um baixo acoplamento entre componentes.
+
+Querer baixo acoplamento entre componentes significa que você está buscando construir um sistema 
+onde as partes são o mais independentes possível umas das outras.
+Isso traz vários benefícios, especialmente em sistemas grandes como um ERP
+
+Quando usar Observer?
+
+Quando: Você quer que módulos de alto nível (ex: regras de negócio) não dependam diretamente de módulos de baixo nível (ex: implementações específicas),
+mas sim de abstrações (interfaces).
+
+Exemplo: O módulo de vendas depende apenas de uma interface INotificadorDeVenda, não de uma classe EmailNotificador ou SMSNotificador diretamente.
+As implementações concretas são "injetadas" (DI/IoC).
+
+Vantagem: Torna o sistema flexível, fácil de testar (usando mocks), e permite trocar implementações sem mexer no código principal.  
+
+1. Identifique o evento principal
+Descubra qual ação (evento) precisa ser observada, por exemplo, uma venda realizada, um produto cadastrado, ou um pedido faturado.
+
+2. Liste os interessados (observers)
+Identifique quais partes do sistema precisam ser avisadas quando esse evento acontecer, como estoque, financeiro, relatórios, notificações, etc.
+
+3. Defina um contrato de notificação
+Estabeleça uma regra (geralmente uma interface) que todos os módulos interessados devem seguir para receber notificações.
+
+4. Permita que módulos se inscrevam
+Implemente uma forma dos interessados se registrarem para receber notificações desse evento.
+
+5. Dispare notificações ao ocorrer o evento
+Quando o evento principal acontecer, percorra todos os módulos inscritos e notifique cada um deles.
+
+6. Permita o descadastro
+Implemente uma forma dos módulos deixarem de receber notificações quando não forem mais interessados.
+
+7. Teste a flexibilidade
+Adicione ou remova módulos interessados sem precisar alterar o código principal que dispara o evento. Isso demonstra o baixo acoplamento do padrão Observer.
+

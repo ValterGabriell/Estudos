@@ -1,42 +1,69 @@
-﻿// See https://aka.ms/new-console-template for more information
-using CommandDesignPattern.Command;
-using CommandDesignPattern.Invoker;
-using Estudos.ChainOfResponsability.Approvals;
-using Estudos.Observer;
-using Estudos.Observer.Observers;
-using System.Windows.Input;
+﻿using System;
+using System.IO;
+using System.Net;
+using System.Text;
 
-Console.WriteLine("Hello, World!");
-
-/*OBERSVER*/
-var venda = new Venda();
-venda.Attach(new RelatorioObserver());
-venda.Attach(new EstoqueObserver());
-venda.RegistrarVenda("Notebook", 3500.00);
-/*OBERSVER*/
-
-
-/*COR*/
-var baseDiscount = new BaseDiscountApproval();
-baseDiscount.SetNext(new VipDiscountApproval())
-    .SetNext(new StockClearenceDiscountApproval())
-    .SetNext(new GlobalDiscountApproval());
-/*COR*/
-
-
-
-//COMAND
-var modifyPrice = new ModifyPrice();
-var product = new Product("Phone", 500);
-
-Execute(modifyPrice, new ProductCommand(product, PriceAction.Increase, 100));
-Execute(modifyPrice, new ProductCommand(product, PriceAction.Increase, 50));
-Execute(modifyPrice, new ProductCommand(product, PriceAction.Decrease, 25));
-
-Console.WriteLine(product);
-
-void Execute(ModifyPrice modifyPrice, ICommandMine productCommand)
+class SoapTest
 {
-    modifyPrice.SetCommand(productCommand);
-    modifyPrice.Execute();
+    static void Main()
+    {
+        string url = "https://app14.sisprocloud.com.br/SpSped5Service/SpedServicecs.asmx"; // URL do serviço SOAP
+        string soapAction = "http://SpSped5Service/SpedServiceCs/SetDocFiscalCs"; // SOAPAction do cabeçalho
+
+        string soapEnvelope = @"<?xml version=""1.0"" encoding=""utf-8""?>
+        <soap:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
+                       xmlns:xsd=""http://www.w3.org/2001/XMLSchema""
+                       xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"">
+          <soap:Body>
+            <SetDocFiscalCs xmlns=""http://SpSped5Service/SpedServiceCs"">
+              <!-- Parâmetros fictícios para teste -->
+              <inWSrecordSetSpecified>true</inWSrecordSetSpecified>
+              <inWSTentantID>1</inWSTentantID>
+              <inWSToken>abc123</inWSToken>
+              <inWSTokenSpecified>true</inWSTokenSpecified>
+            </SetDocFiscalCs>
+          </soap:Body>
+        </soap:Envelope>";
+
+        try
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Headers.Add("SOAPAction", soapAction);
+            request.ContentType = "text/xml; charset=utf-8";
+            request.Method = "POST";
+
+            byte[] data = Encoding.UTF8.GetBytes(soapEnvelope);
+            request.ContentLength = data.Length;
+
+            using (Stream stream = request.GetRequestStream())
+            {
+                stream.Write(data, 0, data.Length);
+            }
+
+            using (WebResponse response = request.GetResponse())
+            {
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    string result = reader.ReadToEnd();
+                    Console.WriteLine("Resposta recebida:");
+                    Console.WriteLine(result);
+                }
+            }
+        }
+        catch (WebException ex)
+        {
+            Console.WriteLine("Erro ao conectar:");
+            Console.WriteLine(ex.Message);
+
+            if (ex.Response != null)
+            {
+                using (StreamReader reader = new StreamReader(ex.Response.GetResponseStream()))
+                {
+                    string error = reader.ReadToEnd();
+                    Console.WriteLine("Detalhes do erro:");
+                    Console.WriteLine(error);
+                }
+            }
+        }
+    }
 }

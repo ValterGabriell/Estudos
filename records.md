@@ -205,6 +205,9 @@ Heap -> "Valter"
 | `Guid`                         | 16 bytes            |
 | Referência (`string`, `class`) | 8 bytes (x64)       |
 
+Record Struct é usado em coordenadas, por exemplo, porque uma coordenada é um dado imutavel, nunca alteramos ela, sempre criamos uma nova.
+Alem disso, é algo pequeno, sao 2 long. oq dao 16 bytes o que é exelente, entao tira pressao da heap e do GC e aloca na stack memoria.
+
 ---
 
 ## **Checklist antes de criar um objeto**
@@ -214,4 +217,5 @@ Heap -> "Valter"
 * Muda ao longo do tempo? → `class`
 * É uma mensagem? → `record`
 * Cruza camadas? → `record`
+
 

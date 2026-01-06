@@ -1,4 +1,30 @@
 
+**Um record, na teoria, é um tipo de dado que representa um valor composto, definido apenas pelos seus campos.**
+
+Ele:
+
+* Não tem identidade
+* Não tem ciclo de vida
+* Não é mutável
+* É comparado pelo conteúdo
+
+Se algum valor muda:
+
+* Não é o mesmo record
+* É criado outro
+
+Em termos de modelo:
+
+* **Entidades** → têm identidade e mudam
+* **Records** → representam valores e são substituídos
+
+Por isso `record` é a base ideal para:
+
+* Value Objects
+* DTOs
+* Mensagens
+* Snapshots de dados
+
 
 ## **Por que para comparar tenho que ter `Equals`, `GetHashCode` e `ToString`?**
 
@@ -217,5 +243,6 @@ Alem disso, é algo pequeno, sao 2 long. oq dao 16 bytes o que é exelente, enta
 * Muda ao longo do tempo? → `class`
 * É uma mensagem? → `record`
 * Cruza camadas? → `record`
+
 
 

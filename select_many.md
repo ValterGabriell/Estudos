@@ -130,4 +130,3 @@ var epsPares = lista
 > **`SelectMany` é usado para projetar e achatar coleções internas em uma única sequência, facilitando operações sobre os elementos internos.**
 
 
-É só dizer.

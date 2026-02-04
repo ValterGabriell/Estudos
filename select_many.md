@@ -115,7 +115,7 @@ var epsPares = lista
 ```
 
 ---
-
+```csharp
 var resultado_achatado = resultados.SelectMany(
     agenda => agenda.Consultas,
     (agenda, consulta) => new 
@@ -130,7 +130,7 @@ var resultado_achatado = resultados.SelectMany(
         PacienteNome = consulta.Nome
     }
 );
-
+```
 ### 🔹 Diferença rápida: `Select` vs `SelectMany`
 
 | Método       | Resultado                   |

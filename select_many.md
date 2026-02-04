@@ -116,6 +116,21 @@ var epsPares = lista
 
 ---
 
+var resultado_achatado = resultados.SelectMany(
+    agenda => agenda.Consultas,
+    (agenda, consulta) => new 
+    {
+        agenda.AgendaId,
+        agenda.EstabelecimentoId,
+        agenda.EstabelecimentoNome,
+        agenda.ProfissionalId,
+        agenda.ProfissionalNome,
+        consulta.ConsultaId,
+        consulta.PacienteId,
+        PacienteNome = consulta.Nome
+    }
+);
+
 ### 🔹 Diferença rápida: `Select` vs `SelectMany`
 
 | Método       | Resultado                   |
